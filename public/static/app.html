@@ -58,38 +58,108 @@
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        .chip {
-            display: inline-flex; align-items: center; padding: 0.5rem 1rem;
-            border-radius: 9999px; font-size: 0.85rem; font-weight: 500; cursor: pointer;
-            border: 1.5px solid #333; background: #1a1a1a; color: #ccc;
-            transition: all 0.15s; margin: 0.25rem;
+
+        /* ── CHAT STYLES ── */
+        .chat-wrap {
+            display: flex; flex-direction: column;
+            height: 100vh; overflow: hidden;
+            background: #0a0a0a;
         }
-        .chip.selected { border-color: #10b981; background: rgba(16,185,129,0.15); color: #10b981; }
-        .chip:hover { border-color: #555; color: #fff; }
+        .chat-header {
+            flex-shrink: 0;
+            padding: 0.875rem 1.25rem;
+            background: #111;
+            border-bottom: 1px solid #222;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .chat-messages {
+            flex: 1; overflow-y: auto;
+            padding: 1rem 1rem 0.5rem;
+            display: flex; flex-direction: column; gap: 0.75rem;
+            scroll-behavior: smooth;
+        }
+        .chat-messages::-webkit-scrollbar { width: 0; }
+        .msg-row { display: flex; align-items: flex-end; gap: 0.5rem; }
+        .msg-row.user { flex-direction: row-reverse; }
+        .msg-avatar {
+            width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem;
+        }
+        .bubble {
+            max-width: 78%; padding: 0.7rem 0.9rem;
+            border-radius: 1.1rem; font-size: 0.875rem; line-height: 1.45;
+        }
+        .bubble.ai {
+            background: #1e1e1e; color: #eee;
+            border-bottom-left-radius: 0.25rem;
+            border: 1px solid #2a2a2a;
+        }
+        .bubble.user {
+            background: #E41000; color: #fff;
+            border-bottom-right-radius: 0.25rem;
+        }
+        .typing-bubble {
+            background: #1e1e1e; border: 1px solid #2a2a2a;
+            padding: 0.7rem 1rem; border-radius: 1.1rem;
+            border-bottom-left-radius: 0.25rem;
+            display: inline-flex; align-items: center; gap: 4px;
+        }
+        .typing-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #555; animation: typingBounce 1.2s infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); background: #555; }
+            30% { transform: translateY(-5px); background: #10b981; }
+        }
         .plan-card {
-            border: 2px solid #333; border-radius: 1rem; padding: 1.25rem;
-            background: #1a1a1a; cursor: pointer; transition: all 0.2s; margin-bottom: 0.75rem;
+            border: 2px solid #333; border-radius: 1rem; padding: 1.1rem;
+            background: #1a1a1a; cursor: pointer; transition: all 0.2s; margin-bottom: 0.6rem;
         }
         .plan-card:hover { border-color: #555; background: #212121; }
         .plan-card.selected { border-color: #10b981; background: rgba(16,185,129,0.08); }
-        .plan-card.recommended { border-color: rgba(245,158,11,0.6); }
-        input[type="number"] {
-            background: transparent; border: none; color: #fff; font-size: 1.1rem;
-            outline: none; width: 100%; padding: 0; font-family: 'Montserrat', sans-serif;
+        .plan-card.recommended { border-color: rgba(245,158,11,0.55); }
+        .shortcut-btn {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.5rem 0.9rem; border-radius: 9999px; font-size: 0.78rem; font-weight: 500;
+            border: 1.5px solid #333; background: #161616; color: #bbb;
+            cursor: pointer; transition: all 0.18s; white-space: nowrap;
         }
-        input[type="number"]::placeholder { color: #555; }
-        .ai-thinking span {
-            display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-            background: #10b981; margin: 0 3px; animation: bounce 1.2s infinite;
+        .shortcut-btn:hover { border-color: #E41000; color: #fff; background: rgba(228,0,43,0.1); }
+        .shortcut-btn:active { transform: scale(0.95); }
+        .chat-input-area {
+            flex-shrink: 0;
+            padding: 0.75rem 1rem 1rem;
+            background: #111;
+            border-top: 1px solid #1e1e1e;
         }
-        .ai-thinking span:nth-child(2) { animation-delay: 0.2s; }
-        .ai-thinking span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-            40% { transform: translateY(-7px); opacity: 1; }
+        .shortcuts-row {
+            display: flex; gap: 0.5rem; overflow-x: auto;
+            padding-bottom: 0.6rem; margin-bottom: 0.5rem;
         }
-        .wizard-step { display: none; }
-        .wizard-step.active { display: block; }
+        .shortcuts-row::-webkit-scrollbar { height: 0; }
+        .chat-input-row {
+            display: flex; align-items: center; gap: 0.5rem;
+            background: #1a1a1a; border-radius: 0.875rem;
+            border: 1.5px solid #2a2a2a; padding: 0.4rem 0.4rem 0.4rem 1rem;
+        }
+        .chat-input-row:focus-within { border-color: #E41000; }
+        #chat-input {
+            flex: 1; background: transparent; border: none; outline: none;
+            color: #fff; font-size: 0.875rem; font-family: 'Montserrat', sans-serif;
+            resize: none; max-height: 80px; overflow-y: auto; line-height: 1.4;
+        }
+        #chat-input::placeholder { color: #444; }
+        .send-btn {
+            width: 36px; height: 36px; border-radius: 0.625rem; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: #E41000; border: none; cursor: pointer; transition: all 0.15s;
+        }
+        .send-btn:hover { background: #c00020; }
+        .send-btn:active { transform: scale(0.92); }
         .hidden { display: none; }
     </style>
 </head>
@@ -103,7 +173,11 @@ var state = {
     page: 'welcome',
     goal: null,
     selectedPlan: null,
-    goalWizard: { step: 1, upgradeType: null, budget: null, timeline: null, preference: null, monthlyMax: null },
+    chat: {
+        messages: [],        // { role:'ai'|'user', text, cards, planCards, actionBtn }
+        collecting: null,    // which field we're waiting for
+        isTyping: false
+    },
     user: {
         name: 'Amina Diallo',
         phone: '+234 *** **7',
@@ -133,7 +207,11 @@ var state = {
 };
 
 // ─── CORE HELPERS ────────────────────────────────────────────────────────────
-function nav(page) { state.page = page; render(); }
+function nav(page) {
+    if (page === 'goal') { initChat(); }
+    state.page = page;
+    render();
+}
 function login() { state.isAuth = true; nav('home'); }
 
 function toast(msg, color) {
@@ -142,7 +220,7 @@ function toast(msg, color) {
     el.style.borderLeftColor = color || '#10b981';
     el.innerHTML = '<p style="font-weight:500">' + msg + '</p>';
     document.body.appendChild(el);
-    setTimeout(function() { el.parentNode && el.parentNode.removeChild(el); }, 2500);
+    setTimeout(function() { el.parentNode && el.parentNode.removeChild(el); }, 2800);
 }
 
 function fmt(n) { return Number(n).toLocaleString('en-NG'); }
@@ -170,85 +248,7 @@ function completeStep(stepId) {
     }
 }
 
-// ─── WIZARD HELPERS ──────────────────────────────────────────────────────────
-function wizardSelectUpgrade(val) {
-    state.goalWizard.upgradeType = val;
-    document.querySelectorAll('.chip-upgrade').forEach(function(c) { c.classList.remove('selected'); });
-    var el = document.querySelector('.chip-upgrade[data-val="' + val + '"]');
-    if (el) el.classList.add('selected');
-}
-function wizardSelectTimeline(val) {
-    state.goalWizard.timeline = val;
-    document.getElementById('input-timeline').value = val;
-    document.querySelectorAll('.chip-timeline').forEach(function(c) { c.classList.remove('selected'); });
-    var el = document.querySelector('.chip-timeline[data-val="' + val + '"]');
-    if (el) el.classList.add('selected');
-}
-function wizardSelectMonthly(val) {
-    state.goalWizard.monthlyMax = val;
-    document.getElementById('input-monthly').value = val;
-    document.querySelectorAll('.chip-monthly').forEach(function(c) { c.classList.remove('selected'); });
-    var el = document.querySelector('.chip-monthly[data-val="' + val + '"]');
-    if (el) el.classList.add('selected');
-}
-function wizardSelectPref(val) {
-    state.goalWizard.preference = val;
-    document.querySelectorAll('.plan-card-pref').forEach(function(c) { c.classList.remove('selected'); });
-    var el = document.querySelector('.plan-card-pref[data-val="' + val + '"]');
-    if (el) el.classList.add('selected');
-}
-
-function wizardNext(nextStep) {
-    var w = state.goalWizard;
-    if (nextStep === 3) {
-        var bv = document.getElementById('input-budget'); w.budget = bv ? Number(bv.value) : w.budget;
-        if (!w.budget || w.budget <= 0) { toast('<i class="fas fa-exclamation-circle"></i> Please enter a valid budget', '#E41000'); return; }
-    }
-    if (nextStep === 4) {
-        var tv = document.getElementById('input-timeline'); w.timeline = tv ? Number(tv.value) : w.timeline;
-        if (!w.timeline || w.timeline <= 0) { toast('<i class="fas fa-exclamation-circle"></i> Please enter a valid timeline', '#E41000'); return; }
-    }
-    if (nextStep === 6) {
-        var mv = document.getElementById('input-monthly'); w.monthlyMax = mv ? Number(mv.value) : w.monthlyMax;
-        if (!w.monthlyMax || w.monthlyMax <= 0) { toast('<i class="fas fa-exclamation-circle"></i> Please enter a monthly cap', '#E41000'); return; }
-    }
-    if (nextStep === 2 && !w.upgradeType) { toast('<i class="fas fa-exclamation-circle"></i> Please select what you are upgrading', '#E41000'); return; }
-    if (nextStep === 5 && !w.preference) { toast('<i class="fas fa-exclamation-circle"></i> Please select a preference', '#E41000'); return; }
-    w.step = nextStep;
-    render();
-    if (nextStep === 7) { setTimeout(function() { w.step = 8; render(); }, 2200); }
-}
-
-function confirmGoal() {
-    var w = state.goalWizard;
-    state.goal = {
-        upgradeType: w.upgradeType || 'Renovation',
-        budget: w.budget || 200000,
-        timeline: w.timeline || 8,
-        preference: w.preference || 'Hybrid',
-        monthlyMax: w.monthlyMax || 25000
-    };
-    var s1 = state.missions[0].steps[0];
-    if (!s1.done) { s1.done = true; state.missions[0].progress = 1; }
-    // Show analysis screen (step 7) first, then advance to plan recommendations (step 8)
-    w.step = 7;
-    render();
-    setTimeout(function() { w.step = 8; render(); }, 2200);
-}
-
-function selectPlan(planKey) {
-    state.selectedPlan = planKey;
-    nav('mission');
-    toast('<i class="fas fa-rocket"></i> Plan activated! Your mission is ready.', '#10b981');
-}
-
-function togglePlanCard(el, planKey) {
-    state.selectedPlan = planKey;
-    document.querySelectorAll('.plan-card-rec').forEach(function(c) { c.classList.remove('selected'); });
-    el.closest('.plan-card-rec').classList.add('selected');
-    render();
-}
-
+// ─── PLAN LOGIC ──────────────────────────────────────────────────────────────
 function getPlan(pk) {
     var g = state.goal || { budget: 200000, timeline: 8, monthlyMax: 25000 };
     var wkly = Math.round(g.budget / g.timeline / 1000) * 1000;
@@ -262,6 +262,383 @@ function getPlan(pk) {
         credit_first: { label: 'Credit-First Plan', icon: 'fa-bolt',          color: '#10b981', tag: null,          lines: ['Take &#8358;' + fmt(g.budget) + ' now', 'Higher monthly repayment applies', 'Funds available immediately'] }
     };
     return plans[pk];
+}
+
+function selectPlan(planKey) {
+    state.selectedPlan = planKey;
+    nav('mission');
+    toast('<i class="fas fa-rocket"></i> Plan activated! Your mission is ready.', '#10b981');
+}
+
+// ─── CHAT ENGINE ─────────────────────────────────────────────────────────────
+
+// Demo scenario scripts: each is an array of { userText, aiText, delay?, cards?, planCards?, actionBtn? }
+var SCENARIOS = {
+    furniture: [
+        { userText: 'I want to buy furniture for my new apartment',
+          aiDelay: 1400,
+          aiText: 'Great choice! Furnishing a new space can really make it feel like home 🏠\n\nWhat\'s your total budget for the furniture?',
+          collecting: 'budget' },
+        { userText: '₦350,000',
+          aiDelay: 1200,
+          aiText: 'Perfect. And what\'s your timeline — how many weeks would you like to achieve this in?',
+          collecting: 'timeline' },
+        { userText: '10 weeks',
+          aiDelay: 1100,
+          aiText: 'Got it. Last thing — what\'s the max you\'re comfortable paying per month?',
+          collecting: 'monthlyMax' },
+        { userText: '₦40,000/month',
+          aiDelay: 1800,
+          aiText: 'Analysing your goal...',
+          isAnalysing: true },
+        { aiDelay: 2200,
+          aiText: 'Here are your 3 recommended paths for a ₦350,000 furniture goal in 10 weeks:',
+          planCards: true,
+          goal: { upgradeType: 'Furniture', budget: 350000, timeline: 10, preference: 'Hybrid', monthlyMax: 40000 } }
+    ],
+    renovation: [
+        { userText: 'I need to renovate my kitchen and bathrooms',
+          aiDelay: 1300,
+          aiText: 'A kitchen and bathroom renovation — great investment! 🔨\n\nHow much do you estimate the full renovation will cost?',
+          collecting: 'budget' },
+        { userText: 'About ₦500,000',
+          aiDelay: 1100,
+          aiText: 'That\'s a solid budget. Over what period are you hoping to fund this — how many weeks?',
+          collecting: 'timeline' },
+        { userText: '12 weeks',
+          aiDelay: 1000,
+          aiText: 'And would you prefer to save gradually, use a pre-approved loan, or a mix of both?',
+          cards: [
+              { val: 'Save-only', icon: 'fa-piggy-bank', color: '#3b82f6', label: 'Save-only', sub: 'Build from savings alone' },
+              { val: 'Hybrid', icon: 'fa-balance-scale', color: '#f59e0b', label: 'Hybrid', sub: 'Save part + pre-approved credit', tag: 'Popular' },
+              { val: 'Credit-first', icon: 'fa-bolt', color: '#10b981', label: 'Credit-first', sub: 'Access funds now, repay over time' }
+          ],
+          collecting: 'preference' },
+        { userText: 'Hybrid',
+          aiDelay: 1800,
+          aiText: 'Running the numbers...',
+          isAnalysing: true },
+        { aiDelay: 2400,
+          aiText: 'Here are your 3 recommended paths for a ₦500,000 renovation in 12 weeks:',
+          planCards: true,
+          goal: { upgradeType: 'Repairs', budget: 500000, timeline: 12, preference: 'Hybrid', monthlyMax: 45000 } }
+    ],
+    appliances: [
+        { userText: 'I want to buy new appliances — fridge, washing machine, TV',
+          aiDelay: 1500,
+          aiText: 'Nice upgrade! 📺 A full appliance refresh usually runs between ₦150k–₦300k depending on brands.\n\nDo you have a specific budget in mind?',
+          collecting: 'budget' },
+        { userText: '₦200,000',
+          aiDelay: 1000,
+          aiText: 'Perfect. And since you already know what you need, would you like to get the money immediately through a pre-approved loan, or save up first?',
+          cards: [
+              { val: 'Save-only', icon: 'fa-piggy-bank', color: '#3b82f6', label: 'Save first', sub: '8–12 weeks to build up funds' },
+              { val: 'Credit-first', icon: 'fa-bolt', color: '#10b981', label: 'Get funds now', sub: 'Pre-approved credit, repay monthly' },
+              { val: 'Hybrid', icon: 'fa-balance-scale', color: '#f59e0b', label: 'Split it', sub: 'Half savings, half credit', tag: 'Recommended' }
+          ],
+          collecting: 'preference' },
+        { userText: 'Get funds now',
+          aiDelay: 1100,
+          aiText: 'Smart choice for immediate needs. What\'s the most you can comfortably repay per month?',
+          collecting: 'monthlyMax' },
+        { userText: '₦25,000',
+          aiDelay: 1800,
+          aiText: 'Crunching your numbers...',
+          isAnalysing: true },
+        { aiDelay: 2200,
+          aiText: 'Here are your 3 recommended paths for a ₦200,000 appliances goal:',
+          planCards: true,
+          goal: { upgradeType: 'Appliances', budget: 200000, timeline: 8, preference: 'Credit-first', monthlyMax: 25000 } }
+    ]
+};
+
+function initChat() {
+    state.chat.messages = [];
+    state.chat.collecting = null;
+    state.chat.isTyping = false;
+    // Opening AI greeting
+    state.chat.messages.push({
+        role: 'ai',
+        text: 'Hi Amina! 👋 I\'m AI-Money.\n\nTell me what you\'re saving or planning for and I\'ll build a personalised financial plan for you. You can type anything — or try one of the shortcuts below.'
+    });
+}
+
+function addMessage(role, text, extras) {
+    var msg = Object.assign({ role: role, text: text }, extras || {});
+    state.chat.messages.push(msg);
+}
+
+function scrollChatToBottom() {
+    setTimeout(function() {
+        var el = document.getElementById('chat-messages');
+        if (el) el.scrollTop = el.scrollHeight;
+    }, 50);
+}
+
+function renderChatMessages() {
+    return state.chat.messages.map(function(msg, idx) {
+        var isAI = msg.role === 'ai';
+        var avatarHtml = isAI
+            ? '<div class="msg-avatar" style="background:rgba(228,0,43,0.15);border:1px solid rgba(228,0,43,0.3)"><i class="fas fa-robot" style="color:#E41000;font-size:0.65rem"></i></div>'
+            : '';
+
+        var bubbleText = msg.text ? msg.text.replace(/\n/g, '<br>') : '';
+        var bubbleHtml = bubbleText
+            ? '<div class="bubble ' + (isAI ? 'ai' : 'user') + '">' + bubbleText + '</div>'
+            : '';
+
+        // Preference cards inside a bubble
+        var cardsHtml = '';
+        if (msg.cards && msg.cards.length) {
+            cardsHtml = '<div style="max-width:78%;margin-top:0.25rem">' +
+                msg.cards.map(function(c) {
+                    return '<div class="plan-card" style="margin-bottom:0.5rem" onclick="chatSelectOption(\'' + c.val + '\')">' +
+                        '<div class="flex items-center gap-3">' +
+                            '<div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.06)"><i class="fas ' + c.icon + '" style="color:' + c.color + '"></i></div>' +
+                            '<div><div class="flex items-center gap-2"><p class="font-semibold text-sm">' + c.label + '</p>' + (c.tag ? '<span class="badge badge-warning" style="font-size:0.6rem;padding:0.1rem 0.4rem">' + c.tag + '</span>' : '') + '</div>' +
+                            '<p class="text-gray-400 text-xs">' + c.sub + '</p></div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('') +
+            '</div>';
+        }
+
+        // Plan recommendation cards
+        var planCardsHtml = '';
+        if (msg.planCards) {
+            var planKeys = ['save_only', 'hybrid', 'credit_first'];
+            planCardsHtml = '<div style="max-width:88%;margin-top:0.25rem">' +
+                planKeys.map(function(pk) {
+                    var p = getPlan(pk);
+                    var isSel = state.selectedPlan === pk;
+                    var linesHtml = p.lines.map(function(l) {
+                        return '<li class="text-xs text-gray-300 flex items-start gap-1.5"><span style="color:#10b981">›</span>' + l + '</li>';
+                    }).join('');
+                    return '<div class="plan-card' + (pk === 'hybrid' ? ' recommended' : '') + (isSel ? ' selected' : '') + '" onclick="chatPickPlan(\'' + pk + '\')" style="margin-bottom:0.5rem">' +
+                        '<div class="flex items-start justify-between mb-2">' +
+                            '<div class="flex items-center gap-2">' +
+                                '<div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.05)"><i class="fas ' + p.icon + '" style="color:' + p.color + ';font-size:0.8rem"></i></div>' +
+                                '<p class="font-semibold text-sm">' + p.label + '</p>' +
+                            '</div>' +
+                            (p.tag ? '<span class="badge badge-warning" style="font-size:0.6rem;padding:0.1rem 0.4rem">' + p.tag + '</span>' : '') +
+                            (isSel ? '<div class="w-5 h-5 rounded-full flex items-center justify-center" style="background:#10b981"><i class="fas fa-check" style="font-size:0.6rem;color:white"></i></div>' : '') +
+                        '</div>' +
+                        '<ul class="space-y-0.5">' + linesHtml + '</ul>' +
+                    '</div>';
+                }).join('') +
+                '<button onclick="activateSelectedPlan()" class="btn btn-primary w-full justify-center text-sm mt-1"' + (state.selectedPlan ? '' : ' style="background:#333;color:#888;cursor:not-allowed"') + '>Activate This Plan &#8594;</button>' +
+            '</div>';
+        }
+
+        return '<div class="msg-row ' + (isAI ? '' : 'user') + '">' +
+            avatarHtml +
+            '<div style="display:flex;flex-direction:column;gap:0.3rem;' + (isAI ? '' : 'align-items:flex-end') + '">' +
+                bubbleHtml +
+                cardsHtml +
+                planCardsHtml +
+            '</div>' +
+        '</div>';
+    }).join('');
+}
+
+function showTyping() {
+    var el = document.getElementById('chat-messages');
+    if (!el) return;
+    var row = document.createElement('div');
+    row.id = 'typing-indicator';
+    row.className = 'msg-row';
+    row.innerHTML =
+        '<div class="msg-avatar" style="background:rgba(228,0,43,0.15);border:1px solid rgba(228,0,43,0.3)"><i class="fas fa-robot" style="color:#E41000;font-size:0.65rem"></i></div>' +
+        '<div class="typing-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+    el.appendChild(row);
+    el.scrollTop = el.scrollHeight;
+}
+
+function hideTyping() {
+    var el = document.getElementById('typing-indicator');
+    if (el) el.parentNode.removeChild(el);
+}
+
+// Re-render just the chat messages area without full page re-render (avoids input losing focus)
+function patchChatMessages() {
+    var el = document.getElementById('chat-messages');
+    if (!el) { render(); return; }
+    el.innerHTML = renderChatMessages();
+    el.scrollTop = el.scrollHeight;
+}
+
+// Select a preference card option inside chat
+function chatSelectOption(val) {
+    if (state.chat.collecting !== 'preference') return;
+    state.chat.collecting = null;
+    addMessage('user', val);
+    patchChatMessages();
+    // Continue scenario
+    continueActiveScenario(val);
+}
+
+function chatPickPlan(pk) {
+    state.selectedPlan = pk;
+    patchChatMessages();
+    scrollChatToBottom();
+}
+
+function activateSelectedPlan() {
+    if (!state.selectedPlan) {
+        toast('<i class="fas fa-exclamation-circle"></i> Please select a plan first', '#E41000');
+        return;
+    }
+    var s1 = state.missions[0].steps[0];
+    if (!s1.done) { s1.done = true; state.missions[0].progress = 1; }
+    selectPlan(state.selectedPlan);
+}
+
+// ─── SCENARIO RUNNER ─────────────────────────────────────────────────────────
+var _activeScenario = null;
+var _scenarioStep = 0;
+var _waitingForInput = false;   // true = we already emitted user message, now emit ai reply
+var _pendingUserText = null;
+
+function runScenario(key) {
+    _activeScenario = SCENARIOS[key];
+    _scenarioStep = 0;
+    _waitingForInput = false;
+    _pendingUserText = null;
+    state.chat.collecting = null;
+    _runNextScenarioStep();
+}
+
+function _runNextScenarioStep() {
+    if (!_activeScenario || _scenarioStep >= _activeScenario.length) return;
+    var step = _activeScenario[_scenarioStep];
+    _scenarioStep++;
+
+    // If step has a userText, show it (simulates the user typing)
+    if (step.userText) {
+        addMessage('user', step.userText);
+        patchChatMessages();
+        _pendingUserText = step.userText;
+    }
+
+    // Then after a delay show AI response
+    if (step.aiText || step.planCards) {
+        var delay = step.aiDelay || 1200;
+        setTimeout(function() {
+            hideTyping();
+
+            if (step.isAnalysing) {
+                // Show the analysing bubble, then immediately continue to next step
+                addMessage('ai', step.aiText);
+                patchChatMessages();
+                // show typing again briefly before next step
+                setTimeout(function() { showTyping(); }, 300);
+                _runNextScenarioStep();
+                return;
+            }
+
+            // Set goal state if provided
+            if (step.goal) {
+                state.goal = step.goal;
+            }
+
+            var extras = {};
+            if (step.cards) extras.cards = step.cards;
+            if (step.planCards) extras.planCards = true;
+            if (step.collecting) {
+                state.chat.collecting = step.collecting;
+                extras.collecting = step.collecting;
+            }
+
+            addMessage('ai', step.aiText || '', extras);
+            patchChatMessages();
+
+            // If this step doesn't wait for user input, auto-continue
+            if (!step.collecting && !step.planCards && _scenarioStep < _activeScenario.length) {
+                setTimeout(function() {
+                    showTyping();
+                    _runNextScenarioStep();
+                }, 600);
+            }
+        }, delay);
+        showTyping();
+    }
+}
+
+// Called when user taps a card option mid-scenario
+function continueActiveScenario(userVal) {
+    if (!_activeScenario) return;
+    // The user just replied — run the next AI step
+    var delay = 1000;
+    setTimeout(function() {
+        showTyping();
+        _runNextScenarioStep();
+    }, 300);
+}
+
+// ─── FREE-FORM INPUT HANDLER ──────────────────────────────────────────────────
+function chatSend(text) {
+    text = (text || '').trim();
+    if (!text) return;
+
+    // Clear input
+    var inp = document.getElementById('chat-input');
+    if (inp) inp.value = '';
+
+    addMessage('user', text);
+    patchChatMessages();
+
+    var lower = text.toLowerCase();
+    var collecting = state.chat.collecting;
+
+    if (collecting === 'preference') {
+        // User typed a preference instead of tapping card
+        state.chat.collecting = null;
+        continueActiveScenario(text);
+        return;
+    }
+
+    if (collecting) {
+        // User typed a value for budget / timeline / monthlyMax
+        state.chat.collecting = null;
+        continueActiveScenario(text);
+        return;
+    }
+
+    // No active scenario — parse intent and start one
+    if (lower.includes('furniture') || lower.includes('chair') || lower.includes('sofa') || lower.includes('table')) {
+        setTimeout(function() { showTyping(); runScenario('furniture'); }, 300);
+        return;
+    }
+    if (lower.includes('renovat') || lower.includes('kitchen') || lower.includes('bathroom') || lower.includes('repair') || lower.includes('paint') || lower.includes('floor')) {
+        setTimeout(function() { showTyping(); runScenario('renovation'); }, 300);
+        return;
+    }
+    if (lower.includes('appliance') || lower.includes('fridge') || lower.includes('washing') || lower.includes('tv') || lower.includes('microwave')) {
+        setTimeout(function() { showTyping(); runScenario('appliances'); }, 300);
+        return;
+    }
+
+    // Generic fallback — ask clarifying question
+    var delay = 1100;
+    showTyping();
+    setTimeout(function() {
+        hideTyping();
+        addMessage('ai', 'Got it! To build your plan, could you tell me a bit more?\n\n• What exactly are you saving or planning for?\n• What\'s your rough budget?\n• How soon do you need it?\n\nFeel free to answer all at once!');
+        state.chat.collecting = 'goal_description';
+        patchChatMessages();
+    }, delay);
+}
+
+function chatSendFromInput() {
+    var inp = document.getElementById('chat-input');
+    if (inp) chatSend(inp.value);
+}
+
+function chatInputKeydown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        chatSendFromInput();
+    }
 }
 
 // ─── RENDERERS ───────────────────────────────────────────────────────────────
@@ -307,7 +684,6 @@ function renderHome() {
             '</div>' +
         '</div>' +
         '<div class="px-6 space-y-5 mt-5">' +
-            /* Quick actions */
             '<div class="flex justify-between gap-3">' +
                 '<div class="flex flex-col items-center gap-2 cursor-pointer">' +
                     '<div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:#E41000"><i class="fas fa-credit-card" style="color:white;font-size:1.5rem"></i></div>' +
@@ -326,7 +702,6 @@ function renderHome() {
                     '<span class="text-xs font-medium">Transfer</span>' +
                 '</div>' +
             '</div>' +
-            /* Points balance */
             '<div class="card-static" style="border:1px solid rgba(245,158,11,0.25)">' +
                 '<div class="flex items-center justify-between">' +
                     '<div>' +
@@ -336,14 +711,12 @@ function renderHome() {
                     '<div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background:rgba(245,158,11,0.15)"><i class="fas fa-star" style="color:#f59e0b;font-size:1.25rem"></i></div>' +
                 '</div>' +
             '</div>' +
-            /* Mystery box */
             '<div class="card" style="background:linear-gradient(90deg,rgba(245,158,11,0.2),rgba(249,115,22,0.2));border:1px solid rgba(245,158,11,0.3)">' +
                 '<div class="flex items-center gap-4">' +
                     '<div class="text-4xl"><i class="fas fa-gift" style="color:#f59e0b"></i></div>' +
                     '<div><h3 class="font-semibold mb-1">Mystery Box</h3><p class="text-gray-400 text-sm">Complete 3 goals to unlock</p></div>' +
                 '</div>' +
             '</div>' +
-            /* Rewards */
             '<div class="card-static">' +
                 '<div class="flex items-center justify-between mb-4">' +
                     '<h2 class="text-lg font-semibold">Your Rewards</h2>' +
@@ -351,7 +724,6 @@ function renderHome() {
                 '</div>' +
                 '<div class="space-y-3">' + rewardsHtml + '</div>' +
             '</div>' +
-            /* Active mission */
             '<div class="card-static" style="background:linear-gradient(135deg,#212121,#1a1a1a);border:1px solid rgba(16,185,129,0.2)">' +
                 '<div class="mb-3">' +
                     '<div class="badge badge-warning mb-2">Active Mission</div>' +
@@ -365,7 +737,6 @@ function renderHome() {
                 '<button onclick="nav(\'mission\')" class="btn btn-primary w-full justify-center">Continue &#8594;</button>' +
             '</div>' +
         '</div>' +
-        /* Floating CTA */
         '<div class="fixed bottom-6 left-6 right-6 z-30">' +
             '<button onclick="nav(\'goal\')" class="w-full py-4 px-6 rounded-full font-semibold flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg" style="background:#E41000;color:white;">' +
                 '<i class="fas fa-robot" style="font-size:1.25rem"></i> Chat to AI-Money' +
@@ -374,169 +745,47 @@ function renderHome() {
     '</div>';
 }
 
+// ─── CHAT / GOAL SCREEN ───────────────────────────────────────────────────────
 function renderGoal() {
-    var w = state.goalWizard;
-    var s = w.step;
-    var g = state.goal || { budget: w.budget || 200000, timeline: w.timeline || 8, monthlyMax: w.monthlyMax || 25000 };
+    var shortcuts = [
+        { icon: 'fa-couch',       label: 'Furnish apartment',    key: 'furniture' },
+        { icon: 'fa-tools',       label: 'Renovate kitchen',     key: 'renovation' },
+        { icon: 'fa-blender',     label: 'Buy appliances',       key: 'appliances' }
+    ];
 
-    /* Step dots */
-    var dots = s <= 5 ? (function() {
-        var d = '';
-        for (var i = 1; i <= 5; i++) d += '<div class="w-6 h-1.5 rounded-full" style="background:' + (i <= s ? '#10b981' : '#333') + '"></div>';
-        return '<div class="ml-auto flex gap-1">' + d + '</div>';
-    })() : '';
+    var shortcutsHtml = shortcuts.map(function(s) {
+        return '<button class="shortcut-btn" onclick="runScenario(\'' + s.key + '\')">' +
+            '<i class="fas ' + s.icon + '"></i>' + s.label +
+        '</button>';
+    }).join('');
 
-    var header = '<div class="px-6 py-4 flex items-center gap-3" style="background:#1a1a1a">' +
-        '<button onclick="nav(\'home\')" class="text-2xl flex-shrink-0">&#8592;</button>' +
-        '<div class="flex items-center gap-2">' +
-            '<div class="w-8 h-8 rounded-full flex items-center justify-center" style="background:rgba(228,0,43,0.15)"><i class="fas fa-robot" style="color:#E41000"></i></div>' +
-            '<div><p class="text-sm font-bold leading-tight">AI-Money</p><p class="text-xs" style="color:#10b981">Goal Creation</p></div>' +
-        '</div>' + dots +
-    '</div>';
-
-    var body = '';
-
-    if (s === 1) {
-        /* Step 1 — What upgrading? */
-        body = '<div class="mb-6"><span class="badge badge-blue">Step 1 of 5</span><h2 class="text-xl font-bold mt-2 mb-1">What are you upgrading?</h2><p class="text-gray-400 text-sm">Select the area you want to improve</p></div>' +
-            '<div class="flex flex-wrap gap-2 mb-8">' +
-                ['Paint','Appliances','Furniture','Repairs'].map(function(v) {
-                    return '<div class="chip chip-upgrade' + (w.upgradeType === v ? ' selected' : '') + '" data-val="' + v + '" onclick="wizardSelectUpgrade(\'' + v + '\')">' +
-                        '<i class="fas ' + {Paint:'fa-paint-roller',Appliances:'fa-blender',Furniture:'fa-couch',Repairs:'fa-tools'}[v] + ' mr-2"></i>' + v +
-                    '</div>';
-                }).join('') +
+    return '<div class="chat-wrap">' +
+        // Header
+        '<div class="chat-header">' +
+            '<button onclick="nav(\'home\')" style="background:none;border:none;color:#aaa;font-size:1.3rem;cursor:pointer;padding:0.2rem 0.4rem;margin-left:-0.25rem">&#8592;</button>' +
+            '<div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(228,0,43,0.18);border:1.5px solid rgba(228,0,43,0.35)"><i class="fas fa-robot" style="color:#E41000;font-size:0.9rem"></i></div>' +
+            '<div>' +
+                '<p class="text-sm font-bold leading-tight">AI-Money</p>' +
+                '<p class="text-xs" style="color:#10b981">● Goal Creation</p>' +
             '</div>' +
-            '<button onclick="wizardNext(2)" class="btn btn-primary w-full justify-center">Next &#8594;</button>';
-    } else if (s === 2) {
-        /* Step 2 — Budget */
-        body = '<div class="mb-6"><span class="badge badge-blue">Step 2 of 5</span><h2 class="text-xl font-bold mt-2 mb-1">What\'s your target budget?</h2><p class="text-gray-400 text-sm">Enter the total amount you need (&#8358;)</p></div>' +
-            '<div class="mb-8">' +
-                '<div class="flex items-center gap-2 mb-2" style="background:#1a1a1a;border:1.5px solid #333;border-radius:0.75rem;padding:0.75rem 1rem;">' +
-                    '<span class="text-gray-400 font-bold text-lg">&#8358;</span>' +
-                    '<input id="input-budget" type="number" placeholder="e.g. 200000" min="1000" value="' + (w.budget || '') + '" oninput="state.goalWizard.budget=Number(this.value)">' +
-                '</div>' +
-                '<p class="text-xs text-gray-500 mt-2">Suggested: &#8358;50,000 – &#8358;500,000</p>' +
+        '</div>' +
+        // Messages
+        '<div id="chat-messages" class="chat-messages">' +
+            renderChatMessages() +
+        '</div>' +
+        // Input area
+        '<div class="chat-input-area">' +
+            '<div class="shortcuts-row" id="shortcuts-row">' +
+                '<span class="text-xs font-medium flex-shrink-0" style="color:#555;align-self:center;margin-right:0.25rem"><i class="fas fa-magic" style="font-size:0.65rem;margin-right:0.2rem"></i>Try:</span>' +
+                shortcutsHtml +
             '</div>' +
-            '<div class="flex gap-3"><button onclick="wizardNext(1)" class="btn btn-outline">&#8592; Back</button><button onclick="wizardNext(3)" class="btn btn-primary flex-1 justify-center">Next &#8594;</button></div>';
-    } else if (s === 3) {
-        /* Step 3 — Timeline */
-        body = '<div class="mb-6"><span class="badge badge-blue">Step 3 of 5</span><h2 class="text-xl font-bold mt-2 mb-1">What\'s your timeline?</h2><p class="text-gray-400 text-sm">How many weeks to reach your goal?</p></div>' +
-            '<div class="mb-8">' +
-                '<div class="flex items-center gap-2 mb-3" style="background:#1a1a1a;border:1.5px solid #333;border-radius:0.75rem;padding:0.75rem 1rem;">' +
-                    '<input id="input-timeline" type="number" placeholder="e.g. 8" min="1" max="52" value="' + (w.timeline || '') + '" oninput="state.goalWizard.timeline=Number(this.value)">' +
-                    '<span class="text-gray-400 font-medium">weeks</span>' +
-                '</div>' +
-                '<div class="flex flex-wrap gap-2">' +
-                    [4,8,12,16].map(function(v) {
-                        return '<div class="chip chip-timeline' + (w.timeline === v ? ' selected' : '') + '" data-val="' + v + '" onclick="wizardSelectTimeline(' + v + ')">' + v + ' weeks</div>';
-                    }).join('') +
-                '</div>' +
+            '<div class="chat-input-row">' +
+                '<textarea id="chat-input" placeholder="Tell me what you\'re planning…" rows="1" onkeydown="chatInputKeydown(event)" oninput="this.style.height=\'auto\';this.style.height=this.scrollHeight+\'px\'"></textarea>' +
+                '<button class="send-btn" onclick="chatSendFromInput()">' +
+                    '<i class="fas fa-paper-plane" style="color:white;font-size:0.8rem"></i>' +
+                '</button>' +
             '</div>' +
-            '<div class="flex gap-3"><button onclick="wizardNext(2)" class="btn btn-outline">&#8592; Back</button><button onclick="wizardNext(4)" class="btn btn-primary flex-1 justify-center">Next &#8594;</button></div>';
-    } else if (s === 4) {
-        /* Step 4 — Preference */
-        var prefOpts = [
-            { val: 'Save-only',    icon: 'fa-piggy-bank',    color: 'rgba(59,130,246,0.2)',    iconColor: '#3b82f6', label: 'Save-only',    sub: 'Build your goal from savings alone', tag: '' },
-            { val: 'Hybrid',      icon: 'fa-balance-scale', color: 'rgba(245,158,11,0.2)',     iconColor: '#f59e0b', label: 'Hybrid',       sub: 'Save part + pre-approved credit',    tag: '<span class="badge badge-warning" style="font-size:0.6rem;padding:0.1rem 0.5rem">Popular</span>' },
-            { val: 'Credit-first',icon: 'fa-bolt',           color: 'rgba(16,185,129,0.2)',    iconColor: '#10b981', label: 'Credit-first', sub: 'Access funds now, repay over time',   tag: '' }
-        ];
-        body = '<div class="mb-6"><span class="badge badge-blue">Step 4 of 5</span><h2 class="text-xl font-bold mt-2 mb-1">What\'s your preference?</h2><p class="text-gray-400 text-sm">How do you want to fund this goal?</p></div>' +
-            '<div class="space-y-3 mb-8">' +
-                prefOpts.map(function(p) {
-                    return '<div class="plan-card plan-card-pref' + (w.preference === p.val ? ' selected' : '') + '" data-val="' + p.val + '" onclick="wizardSelectPref(\'' + p.val + '\')">' +
-                        '<div class="flex items-center gap-3">' +
-                            '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:' + p.color + '"><i class="fas ' + p.icon + '" style="color:' + p.iconColor + '"></i></div>' +
-                            '<div class="flex-1"><div class="flex items-center gap-2"><p class="font-semibold">' + p.label + '</p>' + p.tag + '</div><p class="text-gray-400 text-xs">' + p.sub + '</p></div>' +
-                        '</div>' +
-                    '</div>';
-                }).join('') +
-            '</div>' +
-            '<div class="flex gap-3"><button onclick="wizardNext(3)" class="btn btn-outline">&#8592; Back</button><button onclick="wizardNext(5)" class="btn btn-primary flex-1 justify-center">Next &#8594;</button></div>';
-    } else if (s === 5) {
-        /* Step 5 — Monthly cap */
-        body = '<div class="mb-6"><span class="badge badge-blue">Step 5 of 5</span><h2 class="text-xl font-bold mt-2 mb-1">Keep monthly payments under?</h2><p class="text-gray-400 text-sm">Set your monthly comfort limit (&#8358;)</p></div>' +
-            '<div class="mb-8">' +
-                '<div class="flex items-center gap-2 mb-3" style="background:#1a1a1a;border:1.5px solid #333;border-radius:0.75rem;padding:0.75rem 1rem;">' +
-                    '<span class="text-gray-400 font-bold text-lg">&#8358;</span>' +
-                    '<input id="input-monthly" type="number" placeholder="e.g. 25000" min="1000" value="' + (w.monthlyMax || '') + '" oninput="state.goalWizard.monthlyMax=Number(this.value)">' +
-                    '<span class="text-gray-400 font-medium">/month</span>' +
-                '</div>' +
-                '<div class="flex flex-wrap gap-2">' +
-                    [15000,25000,40000,60000].map(function(v) {
-                        return '<div class="chip chip-monthly' + (w.monthlyMax === v ? ' selected' : '') + '" data-val="' + v + '" onclick="wizardSelectMonthly(' + v + ')">&#8358;' + fmt(v) + '</div>';
-                    }).join('') +
-                '</div>' +
-            '</div>' +
-            '<div class="flex gap-3"><button onclick="wizardNext(4)" class="btn btn-outline">&#8592; Back</button><button onclick="wizardNext(6)" class="btn btn-primary flex-1 justify-center">Analyse with AI &#8594;</button></div>';
-    } else if (s === 6) {
-        /* Step 6 — Confirm */
-        body = '<div class="mb-4"><h2 class="text-xl font-bold mb-1">Confirm your goal</h2><p class="text-gray-400 text-sm">Here\'s what we captured</p></div>' +
-            '<div class="card-static mb-6" style="background:#1a1a1a;border:1px solid rgba(16,185,129,0.3)">' +
-                '<div class="flex items-center gap-3 mb-4">' +
-                    '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(16,185,129,0.15)"><i class="fas fa-home" style="color:#10b981"></i></div>' +
-                    '<div><p class="font-semibold">Home Upgrade Goal</p><p class="text-xs text-gray-400">' + (w.upgradeType || 'Renovation') + '</p></div>' +
-                '</div>' +
-                '<div class="space-y-2 text-sm">' +
-                    '<div class="flex justify-between"><span class="text-gray-400">Target budget</span><span class="font-semibold">&#8358;' + fmt(w.budget || 200000) + '</span></div>' +
-                    '<div class="flex justify-between"><span class="text-gray-400">Timeline</span><span class="font-semibold">' + (w.timeline || 8) + ' weeks</span></div>' +
-                    '<div class="flex justify-between"><span class="text-gray-400">Preference</span><span class="font-semibold">' + (w.preference || 'Hybrid') + '</span></div>' +
-                    '<div class="flex justify-between"><span class="text-gray-400">Monthly cap</span><span class="font-semibold">&#8358;' + fmt(w.monthlyMax || 25000) + '</span></div>' +
-                '</div>' +
-            '</div>' +
-            '<div class="flex gap-3"><button onclick="wizardNext(5)" class="btn btn-outline">&#8592; Edit</button><button onclick="confirmGoal()" class="btn btn-primary flex-1 justify-center"><i class="fas fa-robot"></i> Analyse with AI-Money</button></div>';
-    } else if (s === 7) {
-        /* AI thinking */
-        body = '<div class="flex flex-col items-center justify-center py-16">' +
-            '<div class="w-20 h-20 rounded-full flex items-center justify-center mb-6" style="background:rgba(228,0,43,0.15);border:2px solid rgba(228,0,43,0.4)">' +
-                '<i class="fas fa-robot" style="color:#E41000;font-size:2rem"></i>' +
-            '</div>' +
-            '<h2 class="text-xl font-bold mb-2 text-center">AI-Money is analysing...</h2>' +
-            '<p class="text-gray-400 text-sm text-center mb-6">Building your personalised plan</p>' +
-            '<div class="ai-thinking flex items-center gap-1"><span></span><span></span><span></span></div>' +
-            '<div class="mt-8 text-xs space-y-2 text-center" style="color:#555">' +
-                '<p>&#10003; Checking savings capacity</p><p>&#10003; Evaluating credit options</p><p>&#10003; Matching to goal timeline</p>' +
-            '</div>' +
-        '</div>';
-    } else {
-        /* Step 8 — Plan recommendations */
-        var planKeys = ['save_only', 'hybrid', 'credit_first'];
-        var plansHtml = planKeys.map(function(pk) {
-            var p = getPlan(pk);
-            var isSelected = state.selectedPlan === pk;
-            var linesHtml = p.lines.map(function(l) {
-                return '<li class="text-sm text-gray-300 flex items-start gap-2"><span style="color:#10b981;margin-top:2px">&#8250;</span>' + l + '</li>';
-            }).join('');
-            return '<div class="plan-card plan-card-rec' + (pk === 'hybrid' ? ' recommended' : '') + (isSelected ? ' selected' : '') + '" onclick="togglePlanCard(this,\'' + pk + '\')">' +
-                '<div class="flex items-start justify-between mb-3">' +
-                    '<div class="flex items-center gap-3">' +
-                        '<div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(255,255,255,0.05)"><i class="fas ' + p.icon + '" style="color:' + p.color + '"></i></div>' +
-                        '<p class="font-semibold">' + p.label + '</p>' +
-                    '</div>' +
-                    (p.tag ? '<span class="badge badge-warning" style="font-size:0.65rem">' + p.tag + '</span>' : '') +
-                    (isSelected ? '<div class="w-5 h-5 rounded-full flex items-center justify-center" style="background:#10b981"><i class="fas fa-check" style="font-size:0.6rem;color:white"></i></div>' : '') +
-                '</div>' +
-                '<ul class="space-y-1">' + linesHtml + '</ul>' +
-            '</div>';
-        }).join('');
-
-        var activateBtnStyle = state.selectedPlan ? '' : 'background:#333;color:#888;cursor:not-allowed';
-        var activateOnclick = state.selectedPlan ? 'selectPlan(state.selectedPlan)' : 'toast(\'<i class=\\\'fas fa-exclamation-circle\\\'></i> Please select a plan first\',\'#E41000\')';
-
-        body = '<div class="mb-5">' +
-                '<div class="flex items-center gap-2 mb-3">' +
-                    '<div class="w-7 h-7 rounded-full flex items-center justify-center" style="background:rgba(228,0,43,0.15)"><i class="fas fa-robot" style="color:#E41000;font-size:0.8rem"></i></div>' +
-                    '<span class="text-sm font-medium" style="color:#E41000">AI-Money</span>' +
-                '</div>' +
-                '<h2 class="text-xl font-bold mb-1">3 Recommended Paths</h2>' +
-                '<p class="text-gray-400 text-sm">For your &#8358;' + fmt(g.budget) + ' goal in ' + g.timeline + ' weeks</p>' +
-            '</div>' +
-            plansHtml +
-            '<button onclick="' + activateOnclick + '" class="btn w-full justify-center mt-2' + (state.selectedPlan ? ' btn-primary' : '') + '" style="' + activateBtnStyle + '">Activate This Plan &#8594;</button>';
-    }
-
-    return '<div class="min-h-screen pb-6" style="background:#0a0a0a">' +
-        header +
-        '<div class="px-6 py-6">' + body + '</div>' +
+        '</div>' +
     '</div>';
 }
 
@@ -716,7 +965,7 @@ function render() {
     var el = document.getElementById('app');
     if (!state.isAuth) { el.innerHTML = renderWelcome(); return; }
     if (state.page === 'home')      { el.innerHTML = renderHome();      return; }
-    if (state.page === 'goal')      { el.innerHTML = renderGoal();      return; }
+    if (state.page === 'goal')      { el.innerHTML = renderGoal();      scrollChatToBottom(); return; }
     if (state.page === 'mission')   { el.innerHTML = renderMission();   return; }
     if (state.page === 'profile')   { el.innerHTML = renderProfile();   return; }
     if (state.page === 'campaigns') { el.innerHTML = renderCampaigns(); return; }
