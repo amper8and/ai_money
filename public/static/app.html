@@ -230,10 +230,10 @@ function confirmGoal() {
     };
     var s1 = state.missions[0].steps[0];
     if (!s1.done) { s1.done = true; state.missions[0].progress = 1; }
-    w.step = 8;
-    setTimeout(function() { render(); }, 2200);
+    // Show analysis screen (step 7) first, then advance to plan recommendations (step 8)
     w.step = 7;
     render();
+    setTimeout(function() { w.step = 8; render(); }, 2200);
 }
 
 function selectPlan(planKey) {
